@@ -103,7 +103,7 @@ const AddToCartButton = ({ data, variant = 'green-pill' }) => {
             {isAvailableCart ? (
                 <div className={
                     variant === 'orange-full'
-                        ? `flex items-center justify-between bg-luxury-green text-white rounded-xl overflow-hidden h-10 shadow-premium border border-luxury-green transition-opacity ${loading ? 'opacity-75' : ''} font-luxury-sans`
+                        ? `flex items-center justify-between bg-luxury-green text-white rounded-xl overflow-hidden h-9 lg:h-10 shadow-premium border border-luxury-green transition-opacity ${loading ? 'opacity-75' : ''} font-luxury-sans`
                         : `flex items-center justify-between bg-luxury-green text-white rounded-full overflow-hidden h-9 shadow-premium border border-luxury-green transition-opacity ${loading ? 'opacity-75' : ''} font-luxury-sans`
                 }>
                     <button
@@ -113,7 +113,7 @@ const AddToCartButton = ({ data, variant = 'green-pill' }) => {
                     >
                         <FaMinus size={10} />
                     </button>
-                    <span className='flex-1 text-center font-bold text-sm tabular-nums'>{qty}</span>
+                    <span className='flex-1 text-center font-bold text-[12px] lg:text-sm tabular-nums'>{qty}</span>
                     <button
                         onClick={increaseQty}
                         disabled={loading}
@@ -127,7 +127,7 @@ const AddToCartButton = ({ data, variant = 'green-pill' }) => {
                     <button
                         onClick={handleADDTocart}
                         disabled={loading}
-                        className='w-full h-10 bg-luxury-gold-gradient hover:opacity-95 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium disabled:opacity-70 cursor-pointer font-luxury-sans'
+                        className='w-full h-9 lg:h-10 bg-luxury-gold-gradient hover:opacity-95 text-white font-bold rounded-xl text-[9.5px] lg:text-xs uppercase tracking-wider transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium disabled:opacity-70 cursor-pointer font-luxury-sans'
                     >
                         {loading ? <ButtonLoading /> : 'Add to cart'}
                     </button>

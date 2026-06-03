@@ -7,18 +7,28 @@ import { getImageUrl } from '../utils/getImageUrl'
 import { Link } from 'react-router-dom'
 
 const BannerDisplay = () => {
-    const [banners, setBanners] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [banners, setBanners] = useState(() => {
+        try {
+            const cached = localStorage.getItem('cached_banners')
+            return cached ? JSON.parse(cached) : []
+        } catch (e) {
+            return []
+        }
+    })
+    const [loading, setLoading] = useState(banners.length === 0)
     const [currentImage, setCurrentImage] = useState(0)
 
     const fetchBanners = async () => {
         try {
-            setLoading(true)
             const response = await Axios({
                 ...SummaryApi.getBanner
             })
             if (response.data.success) {
-                setBanners(response.data.data.filter(b => b.isActive))
+                const activeBanners = response.data.data.filter(b => b.isActive)
+                setBanners(activeBanners)
+                try {
+                    localStorage.setItem('cached_banners', JSON.stringify(activeBanners))
+                } catch (e) {}
             }
         } catch (error) {
             AxiosToastError(error)
@@ -67,7 +77,7 @@ const BannerDisplay = () => {
                                         {/* Desktop */}
                                         {banner.imageDesktop && (
                                             <img 
-                                                src={getImageUrl(banner.imageDesktop)} 
+                                                src={getImageUrl(banner.imageDesktop, 1400)} 
                                                 alt={banner.name || `Banner ${index + 1}`}
                                                 loading={index === 0 ? "eager" : "lazy"}
                                                 className='hidden lg:block w-full aspect-1375/410 object-cover cursor-pointer hover:opacity-95 transition-opacity'
@@ -78,7 +88,7 @@ const BannerDisplay = () => {
                                             <div className='lg:hidden w-full px-4 pt-4 pb-8'>
                                                 <div className='w-full aspect-16/10 sm:aspect-21/9 rounded-4xl overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100/50'>
                                                     <img 
-                                                        src={getImageUrl(banner.imageMobile || banner.imageDesktop)} 
+                                                        src={getImageUrl(banner.imageMobile || banner.imageDesktop, 640)} 
                                                         alt={banner.name || `Banner ${index + 1}-mobile`}
                                                         loading={index === 0 ? "eager" : "lazy"}
                                                         className='w-full h-full object-cover cursor-pointer active:scale-[0.98] transition-transform duration-300'
@@ -92,7 +102,7 @@ const BannerDisplay = () => {
                                         {/* Desktop */}
                                         {banner.imageDesktop && (
                                             <img 
-                                                src={getImageUrl(banner.imageDesktop)} 
+                                                src={getImageUrl(banner.imageDesktop, 1400)} 
                                                 alt={banner.name || `Banner ${index + 1}`}
                                                 loading={index === 0 ? "eager" : "lazy"}
                                                 className='hidden lg:block w-full aspect-1375/410 object-cover'
@@ -103,7 +113,7 @@ const BannerDisplay = () => {
                                             <div className='lg:hidden w-full px-4 pt-4 pb-8'>
                                                 <div className='w-full aspect-16/10 sm:aspect-21/9 rounded-4xl overflow-hidden shadow-2xl shadow-gray-200/50 border border-gray-100/50'>
                                                     <img 
-                                                        src={getImageUrl(banner.imageMobile || banner.imageDesktop)} 
+                                                        src={getImageUrl(banner.imageMobile || banner.imageDesktop, 640)} 
                                                         alt={banner.name || `Banner ${index + 1}-mobile`}
                                                         loading={index === 0 ? "eager" : "lazy"}
                                                         className='w-full h-full object-cover'

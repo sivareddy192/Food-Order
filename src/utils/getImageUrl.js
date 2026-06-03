@@ -1,4 +1,4 @@
-export const getImageUrl = (image) => {
+export const getImageUrl = (image, width) => {
     if (!image) return "/placeholder.png";
 
     let url = "";
@@ -20,7 +20,8 @@ export const getImageUrl = (image) => {
 
     // Optimize Cloudinary assets dynamically with auto format and quality auto compression
     if (url.includes("res.cloudinary.com") && url.includes("/image/upload/")) {
-        url = url.replace("/image/upload/", "/image/upload/q_auto,f_auto/");
+        const transform = width ? `q_auto,f_auto,w_${width}` : 'q_auto,f_auto';
+        url = url.replace("/image/upload/", `/image/upload/${transform}/`);
     }
 
     // If it's a relative path, prepend the API base URL

@@ -47,6 +47,16 @@ const ProductDisplay = () => {
   const [showOpenBoxModal, setShowOpenBoxModal] = useState(false)
   const [showAllImages, setShowAllImages] = useState(false)
 
+  const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 })
+  const [isZoomed, setIsZoomed] = useState(false)
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - rect.left) / rect.width) * 100
+    const y = ((e.clientY - rect.top) / rect.height) * 100
+    setZoomPos({ x, y })
+  }
+
   // Custom active tab state inside details accordion
   const [activeTab, setActiveTab] = useState("SHOWCASE")
 
@@ -408,33 +418,52 @@ const ProductDisplay = () => {
                         className='w-full h-full flex overflow-x-scroll snap-x snap-mandatory no-scrollbar lg:overflow-hidden'
                     >
                         {mediaList.map((item, index) => (
-                            <div key={index} className='w-full min-w-full h-full shrink-0 snap-center snap-always flex items-center justify-center p-2 lg:p-14 lg:pt-20'>
+                            <div key={index} className='w-full min-w-full h-full shrink-0 snap-center snap-always flex items-center justify-center p-0'>
                                 {hasVideo && index === 0 ? (
-                                    <div 
-                                        onClick={() => setIsFullScreen(true)}
-                                        className='relative w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center cursor-pointer'
-                                    >
-                                        <video 
-                                            src={getImageUrl(item)} 
-                                            className='w-full h-full object-contain pointer-events-none'
-                                            muted
-                                            playsInline
-                                        />
-                                        <div className='absolute inset-0 flex items-center justify-center bg-black/25'>
-                                            <div className='w-14 h-14 bg-white/95 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95'>
-                                                <svg className="w-8 h-8 text-green-700 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
-                                                </svg>
+                                    <div className='w-full h-full p-4 lg:p-6'>
+                                        <div 
+                                            onClick={() => setIsFullScreen(true)}
+                                            className='relative w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center cursor-pointer'
+                                        >
+                                            <video 
+                                                src={getImageUrl(item)} 
+                                                className='w-full h-full object-contain pointer-events-none'
+                                                muted
+                                                playsInline
+                                            />
+                                            <div className='absolute inset-0 flex items-center justify-center bg-black/25'>
+                                                <div className='w-14 h-14 bg-white/95 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95'>
+                                                    <svg className="w-8 h-8 text-green-700 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                                                    </svg>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <img
-                                        src={getImageUrl(item)}
+                                    <div 
+                                        className="relative w-full h-full overflow-hidden flex items-center justify-center cursor-zoom-in"
+                                        onMouseMove={handleMouseMove}
+                                        onMouseEnter={() => setIsZoomed(true)}
+                                        onMouseLeave={() => {
+                                            setIsZoomed(false);
+                                            setZoomPos({ x: 50, y: 50 });
+                                        }}
                                         onClick={() => setIsFullScreen(true)}
-                                        className='w-full h-full object-contain transition-transform duration-500 lg:group-hover:scale-105 cursor-zoom-in'
-                                        alt={`${data?.name}-${index}`}
-                                    /> 
+                                    >
+                                        <img
+                                            src={getImageUrl(item, 800)}
+                                            style={isZoomed ? {
+                                                transform: 'scale(2.2)',
+                                                transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`
+                                            } : {
+                                                transform: 'scale(1)',
+                                                transformOrigin: 'center'
+                                            }}
+                                            className={`w-full h-full object-contain transition-all duration-150 ease-out pointer-events-none ${isZoomed ? 'p-0' : 'p-4 lg:p-6'}`}
+                                            alt={`${data?.name}-${index}`}
+                                        /> 
+                                    </div>
                                 )}
                             </div>
                         ))}
@@ -498,7 +527,7 @@ const ProductDisplay = () => {
                             {hasVideo && index === 0 ? (
                                 <div className='relative w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center'>
                                     {validImages[0] && (
-                                        <img src={getImageUrl(validImages[0])} className='absolute inset-0 w-full h-full object-cover opacity-50' alt="video thumbnail" />
+                                        <img src={getImageUrl(validImages[0], 150)} className='absolute inset-0 w-full h-full object-cover opacity-50' alt="video thumbnail" />
                                     )}
                                     <div className='absolute inset-0 flex items-center justify-center'>
                                         <svg className="w-6 h-6 text-white drop-shadow-lg" fill="currentColor" viewBox="0 0 24 24">
@@ -507,7 +536,7 @@ const ProductDisplay = () => {
                                     </div>
                                 </div>
                             ) : (
-                                <img src={getImageUrl(item)} className='w-full h-full object-contain' alt={`thumbnail-${index}`} />
+                                <img src={getImageUrl(item, 150)} className='w-full h-full object-contain' alt={`thumbnail-${index}`} />
                             )}
                           </div>
                         ))
@@ -1201,7 +1230,7 @@ const ProductDisplay = () => {
                                           {hasVideo && index === 0 ? (
                                               <div className='relative w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center'>
                                                   {validImages[0] && (
-                                                      <img src={getImageUrl(validImages[0])} className='absolute inset-0 w-full h-full object-cover opacity-50' alt="video thumb" />
+                                                      <img src={getImageUrl(validImages[0], 150)} className='absolute inset-0 w-full h-full object-cover opacity-50' alt="video thumb" />
                                                   )}
                                                   <div className='absolute inset-0 flex items-center justify-center'>
                                                       <svg className="w-6 h-6 text-white drop-shadow-lg" fill="currentColor" viewBox="0 24 24">
@@ -1210,7 +1239,7 @@ const ProductDisplay = () => {
                                                   </div>
                                               </div>
                                           ) : (
-                                              <img src={getImageUrl(item)} className='w-full h-full object-contain' alt={`thumb-${index}`} />
+                                              <img src={getImageUrl(item, 150)} className='w-full h-full object-contain' alt={`thumb-${index}`} />
                                           )}
                                       </div>
                                   ))}

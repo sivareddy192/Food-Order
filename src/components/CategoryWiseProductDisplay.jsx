@@ -102,6 +102,7 @@ const CategoryWiseProductDisplay = ({ id, name, manualData, hideNewTag }) => {
                             key={p._id + "CategoryProduct" + index}
                             data={p}
                             hideNewTag={hideNewTag}
+                            styleWidth="w-44 sm:w-52 lg:w-60 xl:w-64"
                         />
                     ))}
                    

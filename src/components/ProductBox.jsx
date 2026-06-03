@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toggleWishlist } from '../store/wishlistSlice'
 import toast from 'react-hot-toast'
 
-const ProductBox = ({ data, hideNewTag }) => {
+const ProductBox = ({ data, hideNewTag, styleWidth = "w-full" }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { addItemToCart, cartItem } = useGlobalContext()
@@ -53,8 +53,14 @@ const ProductBox = ({ data, hideNewTag }) => {
     return best || { unit: p.unit, price: p.price, mrp: p.mrp, discount: p.discount, stock: p.stock };
   };
 
+  const images = data.image && Array.isArray(data.image)
+    ? data.image.filter(img => typeof img === 'string' && img.trim() !== '')
+    : [];
+
   const [selectedVariant, setSelectedVariant] = useState(() => getBestVariant(data));
   const [stock, setStock] = useState(selectedVariant.stock);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   // Sync when data changes
   React.useEffect(() => {
@@ -62,6 +68,25 @@ const ProductBox = ({ data, hideNewTag }) => {
     setSelectedVariant(best);
     setStock(best.stock);
   }, [data]);
+
+  React.useEffect(() => {
+    if (images.length <= 1 || isHovered) {
+      return;
+    }
+    const interval = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % images.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [images.length, isHovered]);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    setCurrentImgIndex(0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const handleVariantChange = (e) => {
     const unit = e.target.value;
@@ -124,8 +149,12 @@ const ProductBox = ({ data, hideNewTag }) => {
   };
 
   return (
-    <div className="group relative w-44 sm:w-52 lg:w-60 xl:w-64 shrink-0">
-      <div className="flex flex-col glass-card rounded-3xl overflow-hidden h-full relative">
+    <div className={`group relative shrink-0 ${styleWidth}`}>
+      <div 
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="flex flex-col glass-card rounded-3xl overflow-hidden h-full relative"
+      >
 
         {isOutOfStock && (
           <div className="absolute inset-0 bg-[#fafaf8]/70 dark:bg-[#06070a]/70 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center p-4 select-none">
@@ -137,18 +166,21 @@ const ProductBox = ({ data, hideNewTag }) => {
         )}
 
         {/* ── Image Zone ───────────────────────────────────────────────── */}
-        <Link to={url} className="relative aspect-square w-full bg-[#faf9f6] items-center justify-center p-3 overflow-hidden block">
-          <img
-            src={getImageUrl(data.image[0])}
-            alt={data.name}
-            className={`w-full h-full object-contain transition-all duration-500 group-hover:scale-[1.04] ${data.image[1] ? 'group-hover:opacity-0' : ''}`}
-          />
-          {data.image[1] && (
+        <Link to={url} className="relative aspect-square w-full bg-[#faf9f6] flex items-center justify-center p-3 overflow-hidden">
+          {images.map((imgUrl, idx) => (
             <img
-              src={getImageUrl(data.image[1])}
-              alt={`${data.name} alternate view`}
-              className="absolute inset-0 w-full h-full object-contain p-3 transition-all duration-500 opacity-0 group-hover:opacity-100 group-hover:scale-[1.04]"
+              key={idx}
+              src={getImageUrl(imgUrl, 300)}
+              alt={`${data.name} view ${idx}`}
+              className={`absolute inset-0 w-full h-full object-contain p-3 transition-all duration-700 ease-in-out ${
+                idx === currentImgIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+              } ${isHovered && idx === 0 ? 'scale-[1.04]' : 'scale-100'}`}
             />
+          ))}
+          {images.length === 0 && (
+            <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+              No Image
+            </div>
           )}
 
           {/* Discount Badge – gold circle top-left */}
@@ -191,18 +223,18 @@ const ProductBox = ({ data, hideNewTag }) => {
         </Link>
 
         {/* ── Content ──────────────────────────────────────────────────── */}
-        <div className="flex flex-col flex-1 p-4">
+        <div className="flex flex-col flex-1 p-3 lg:p-4">
 
           {/* Product Name */}
           <Link to={url}>
-            <h3 className="text-[13px] lg:text-[14.5px] font-bold text-slate-800 line-clamp-2 leading-snug mb-3 tracking-tight font-luxury-sans group-hover:text-luxury-green-dark transition-colors">
+            <h3 className="text-[12px] lg:text-[14.5px] font-bold text-slate-800 line-clamp-2 leading-snug mb-2 lg:mb-3 tracking-tight font-luxury-sans group-hover:text-luxury-green-dark transition-colors">
               {data.name}
             </h3>
           </Link>
 
           {/* Variant Selector / single unit label */}
           <div
-            className="mb-3"
+            className="mb-2 lg:mb-3"
             onClick={e => { e.preventDefault(); e.stopPropagation(); }}
           >
             {dropdownVariants.length > 1 ? (
@@ -210,7 +242,7 @@ const ProductBox = ({ data, hideNewTag }) => {
                 <select
                   value={selectedVariant.unit}
                   onChange={handleVariantChange}
-                  className="w-full text-[12px] lg:text-[13px] bg-white border border-gray-200 rounded-2xl py-2.5 pl-4 pr-9 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-luxury-gold/30 font-semibold text-slate-700 transition-all hover:border-gray-300 font-luxury-sans shadow-3xs"
+                  className="w-full text-[11px] lg:text-[13px] bg-white border border-gray-200 rounded-xl lg:rounded-2xl py-1.5 lg:py-2.5 pl-3 lg:pl-4 pr-7 lg:pr-9 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-luxury-gold/30 font-semibold text-slate-700 transition-all hover:border-gray-300 font-luxury-sans shadow-3xs"
                 >
                   {dropdownVariants.map((v, i) => (
                     <option key={i} value={v.unit}>{v.unit}</option>
@@ -230,29 +262,29 @@ const ProductBox = ({ data, hideNewTag }) => {
           </div>
 
           {/* Price & Stock Container */}
-          <div className="flex items-start justify-between gap-2 mb-4">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-1.5 lg:gap-2 mb-3 lg:mb-4">
             {/* Price */}
             <div>
-              <p className="text-[18px] lg:text-[20px] font-black text-luxury-green-dark leading-none font-luxury-sans">
+              <p className="text-[15px] lg:text-[20px] font-black text-luxury-green-dark leading-none font-luxury-sans">
                 {DisplayPriceInRupees(discountedPrice)}
               </p>
               {hasDiscount && (
-                <p className="text-[11px] text-gray-400 font-semibold line-through mt-1 font-luxury-sans">
+                <p className="text-[9.5px] lg:text-[11px] text-gray-400 font-semibold line-through mt-0.5 lg:mt-1 font-luxury-sans">
                   {DisplayPriceInRupees(originalPrice)}
                 </p>
               )}
             </div>
 
             {/* Stock Badge */}
-            <div className="shrink-0 mt-0.5">
+            <div className="shrink-0">
               {!isOutOfStock ? (
-                <div className="flex items-center gap-1.5 bg-emerald-50 text-luxury-green px-2.5 py-1 rounded-full text-[9px] font-black tracking-wider border border-emerald-100/60 font-luxury-sans">
-                  <span className="w-1.5 h-1.5 rounded-full bg-luxury-green" />
+                <div className="flex items-center gap-1 bg-emerald-50 text-luxury-green px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full text-[8.5px] lg:text-[9px] font-black tracking-wider border border-emerald-100/60 font-luxury-sans">
+                  <span className="w-1 h-1 rounded-full bg-luxury-green" />
                   <span>IN STOCK</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5 bg-red-50 text-red-600 px-2.5 py-1 rounded-full text-[9px] font-black tracking-wider border border-red-100/60 font-luxury-sans">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                <div className="flex items-center gap-1 bg-red-50 text-red-600 px-2 py-0.5 lg:px-2.5 lg:py-1 rounded-full text-[8.5px] lg:text-[9px] font-black tracking-wider border border-red-100/60 font-luxury-sans">
+                  <span className="w-1 h-1 rounded-full bg-red-500" />
                   <span>OUT OF STOCK</span>
                 </div>
               )}
@@ -261,26 +293,26 @@ const ProductBox = ({ data, hideNewTag }) => {
 
           {/* CTAs */}
           <div
-            className="flex flex-col gap-2 mt-auto"
+            className="flex flex-col gap-1.5 mt-auto"
             onClick={e => { e.preventDefault(); e.stopPropagation(); }}
           >
             {!isOutOfStock ? (
               isNewlyCreated ? (
                 <button
                   onClick={handleBuyNow}
-                  className="w-full h-11 bg-linear-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold rounded-2xl text-[11px] uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium font-luxury-sans cursor-pointer"
+                  className="w-full h-9 lg:h-11 bg-linear-to-r from-amber-600 to-yellow-500 hover:from-amber-700 hover:to-yellow-600 text-white font-bold rounded-xl lg:rounded-2xl text-[9.5px] lg:text-[11px] uppercase tracking-wider lg:tracking-widest transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium font-luxury-sans cursor-pointer"
                 >
                   Pre-order
                 </button>
               ) : (
                 <>
-                  {/* ADD TO CART – gold gradient matching reference */}
+                  {/* ADD TO CART */}
                   <AddToCartButton data={activeProductData} variant="orange-full" />
 
-                  {/* BUY NOW – dark forest green */}
+                  {/* BUY NOW */}
                   <button
                     onClick={handleBuyNow}
-                    className="w-full h-11 bg-luxury-green-dark hover:bg-luxury-green text-white font-bold rounded-2xl text-[11px] uppercase tracking-widest transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium font-luxury-sans cursor-pointer"
+                    className="w-full h-9 lg:h-11 bg-luxury-green-dark hover:bg-luxury-green text-white font-bold rounded-xl lg:rounded-2xl text-[9.5px] lg:text-[11px] uppercase tracking-wider lg:tracking-widest transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center shadow-premium font-luxury-sans cursor-pointer"
                   >
                     Buy Now
                   </button>
@@ -289,7 +321,7 @@ const ProductBox = ({ data, hideNewTag }) => {
             ) : (
               <button
                 disabled
-                className="w-full h-11 bg-gray-100 text-gray-400 font-semibold rounded-2xl text-xs flex items-center justify-center cursor-not-allowed select-none font-luxury-sans"
+                className="w-full h-9 lg:h-11 bg-gray-100 text-gray-400 font-semibold rounded-xl lg:rounded-2xl text-[10px] lg:text-xs flex items-center justify-center cursor-not-allowed select-none font-luxury-sans"
               >
                 Out of Stock
               </button>
