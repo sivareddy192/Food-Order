@@ -1,0 +1,376 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/App.jsx
+   4:8   error    'toast' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                             no-unused-vars
+  12:10  error    'handleAddItemCart' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                 no-unused-vars
+  25:9   error    'location' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                 no-unused-vars
+  68:13  error    Empty block statement                                                                                                                                    no-empty
+  94:6   warning  React Hook useEffect has missing dependencies: 'fetchCategory', 'fetchSubCategory', and 'fetchUser'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/AdminLayout.jsx
+  135:18  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  133 |             {/* Desktop Sidebar */}
+  134 |             <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:z-50">
+> 135 |                 <Sidebar />
+      |                  ^^^^^^^ This component is created during render
+  136 |             </div>
+  137 |
+  138 |             {/* Mobile Sidebar Overlay */}
+
+   78 |         }`
+   79 |
+>  80 |     const Sidebar = () => (
+      |                     ^^^^^^^
+>  81 |         <aside className="flex flex-col h-full bg-white border-r border-gray-100">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  82 |             {/* Brand */}
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 126 |         </aside>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 127 |     )
+      | ^^^^^^ The component is created during render here
+  128 |
+  129 |     return (
+  130 |         <div className="min-h-screen bg-[#f7f8fc] flex">           react-hooks/static-components
+  146:26  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  144 |                     />
+  145 |                     <div className="relative w-72 flex flex-col bg-white h-full z-10 shadow-2xl">
+> 146 |                         <Sidebar />
+      |                          ^^^^^^^ This component is created during render
+  147 |                     </div>
+  148 |                 </div>
+  149 |             )}
+
+   78 |         }`
+   79 |
+>  80 |     const Sidebar = () => (
+      |                     ^^^^^^^
+>  81 |         <aside className="flex flex-col h-full bg-white border-r border-gray-100">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  82 |             {/* Brand */}
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 126 |         </aside>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 127 |     )
+      | ^^^^^^ The component is created during render here
+  128 |
+  129 |     return (
+  130 |         <div className="min-h-screen bg-[#f7f8fc] flex">  react-hooks/static-components
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/BottomNavigationBar.jsx
+  7:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/CategoryWiseProductDisplay.jsx
+  47:8  warning  React Hook useEffect has a missing dependency: 'fetchCategoryWiseProduct'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/DeliveryLayout.jsx
+  42:18  error  'error' is defined but never used  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/DisplayCartItem.jsx
+  81:8  warning  React Hook useEffect has a missing dependency: 'fetchAvailableCoupons'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/DisplayTable.jsx
+   3:3   error    'createColumnHelper' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+  12:17  warning  Compilation Skipped: Use of incompatible library
+
+This API returns functions which cannot be memoized without leading to stale UI. To prevent this, by default React Compiler will skip memoizing this component/hook. However, you may see issues if values from this API are passed to other components/hooks that are memoized.
+
+  10 |
+  11 | const DisplayTable = ({ data, column }) => {
+> 12 |   const table = useReactTable({
+     |                 ^^^^^^^^^^^^^ TanStack Table's `useReactTable()` API returns functions that cannot be memoized safely
+  13 |     data,
+  14 |     columns : column,
+  15 |     getCoreRowModel: getCoreRowModel(),  react-hooks/incompatible-library
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/EditCoupon.jsx
+  23:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  21 |   useEffect(() => {
+  22 |     if (data) {
+> 23 |       setForm({
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  24 |         code: data.code || "",
+  25 |         discountPercent: data.discountPercent || "",
+  26 |         minAmount: data.minAmount || "",  react-hooks/set-state-in-effect
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/EditProductAdmin.jsx
+  98:6  warning  React Hook useEffect has a missing dependency: 'normalizeToObjects'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/Header.jsx
+  18:10  error  'isMobile' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u   no-unused-vars
+  20:9   error  'isSearchP' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  25:9   error  'cartItem' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u   no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/Loading.jsx
+  1:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/ProductBox.jsx
+   64:6   warning  React Hook React.useEffect has a missing dependency: 'getBestVariant'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  121:62  error    'err' is defined but never used                                                                                          no-unused-vars
+  121:67  error    Empty block statement                                                                                                    no-empty
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/QRScanner.jsx
+   4:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            no-unused-vars
+  18:26  error    'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            no-unused-vars
+  18:29  error    Empty block statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-empty
+  42:34  error    'e' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            no-unused-vars
+  42:37  error    Empty block statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-empty
+  57:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  55 |
+  56 |     useEffect(() => {
+> 57 |         startScanner();
+     |         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  58 |         return () => {
+  59 |             if (scannerRef.current && scannerRef.current.isScanning) {
+  60 |                 scannerRef.current.stop().catch(console.error);  react-hooks/set-state-in-effect
+  63:8   warning  React Hook useEffect has a missing dependency: 'startScanner'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/ReviewsSection.jsx
+  200:51  error  'i' is defined but never used  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/Search.jsx
+  19:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  17 |     useEffect(()=>{
+  18 |         const isSearch = location.pathname === "/search"
+> 19 |         setIsSearchPage(isSearch)
+     |         ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  20 |     },[location])
+  21 |
+  22 |  react-hooks/set-state-in-effect
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/components/WelcomeOffersPopup.jsx
+  15:10  error    'loading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                       no-unused-vars
+  16:10  error    'copied' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                        no-unused-vars
+  30:6   warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/hooks/useMobile.jsx
+  12:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  10 |
+  11 |     useEffect(()=>{
+> 12 |         handleResize()
+     |         ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  13 |
+  14 |         window.addEventListener('resize',handleResize)
+  15 |  react-hooks/set-state-in-effect
+  19:7  warning  React Hook useEffect has a missing dependency: 'handleResize'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AccountPrivacy.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminDashboard.jsx
+  10:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  15:41  error  'sub' is defined but never used                                                no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminLandingPage.jsx
+  70:14  error  'error' is defined but never used  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminMessages.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminNotifications.jsx
+  2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminOrderDetails.jsx
+   5:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                         no-unused-vars
+  27:18  error    'err' is defined but never used                                                                                       no-unused-vars
+  36:8   warning  React Hook useEffect has a missing dependency: 'fetchOrderDetails'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  50:18  error    'err' is defined but never used                                                                                       no-unused-vars
+  66:18  error    'err' is defined but never used                                                                                       no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminOrders.jsx
+   5:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                 no-unused-vars
+  15:10  error  'deliveryBoys' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  81:14  error  'err' is defined but never used                                                               no-unused-vars
+  96:14  error  'err' is defined but never used                                                               no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/AdminReviews.jsx
+  83:43  error  'index' is defined but never used  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/CheckoutPage.jsx
+  16:5  error    'totalQty' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                         no-unused-vars
+  78:6  warning  React Hook useEffect has a missing dependency: 'fetchAddress'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/DeliveryBoyDashboard.jsx
+    4:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                    no-unused-vars
+    9:10  error  'getImageUrl' is defined but never used. Allowed unused vars must match /^[A-Z_]/u               no-unused-vars
+   11:7   error  'statusSteps' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u      no-unused-vars
+   23:12  error  'verifying' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u        no-unused-vars
+   24:12  error  'sendingOtp' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u       no-unused-vars
+   54:18  error  'err' is defined but never used                                                                  no-unused-vars
+   81:22  error  'err' is defined but never used                                                                  no-unused-vars
+  125:11  error  'updateStatus' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u     no-unused-vars
+  144:18  error  'err' is defined but never used                                                                  no-unused-vars
+  152:11  error  'handleSendOTP' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u    no-unused-vars
+  167:11  error  'handleVerifyOTP' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/DeliveryNotifications.jsx
+   2:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                 no-unused-vars
+  47:11  error  'handleDelete' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/DeliveryOrderDetails.jsx
+   5:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                         no-unused-vars
+  30:18  error    'err' is defined but never used                                                                                       no-unused-vars
+  39:8   warning  React Hook useEffect has a missing dependency: 'fetchOrderDetails'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  58:18  error    'err' is defined but never used                                                                                       no-unused-vars
+  71:18  error    'err' is defined but never used                                                                                       no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/Home.jsx
+  28:10  error  'loadingOffers' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/MyOrders.jsx
+   5:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                   no-unused-vars
+  43:7   error    'showToast' is not defined                                                                                      no-undef
+  61:6   warning  React Hook useEffect has a missing dependency: 'fetchOrders'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/OrderDetails.jsx
+  34:8  warning  React Hook useEffect has a missing dependency: 'map'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/OtpVerification.jsx
+  25:8   warning  React Hook useEffect has missing dependencies: 'location?.state?.email' and 'navigate'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      react-hooks/exhaustive-deps
+  30:13  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  28 |     useEffect(() => {
+  29 |         if (timer === 0) {
+> 30 |             setCanResend(true);
+     |             ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |             return;
+  32 |         }
+  33 |  react-hooks/set-state-in-effect
+  94:19  error    'res' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/Product.jsx
+   9:16  error    'setPage' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                              no-unused-vars
+  37:6   warning  React Hook useEffect has a missing dependency: 'fetchProductData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/ProductAdmin.jsx
+  45:6  warning  React Hook useEffect has a missing dependency: 'fetchProductData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  67:6  warning  React Hook useEffect has a missing dependency: 'fetchProductData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/ProductDisplay.jsx
+   16:10  error    'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u                                                                no-unused-vars
+   23:26  error    'cartItem' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                     no-unused-vars
+   36:10  error    'reviewLoading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                no-unused-vars
+   45:10  error    'isPincodeChecked' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                             no-unused-vars
+   46:10  error    'pincodeAvailable' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                             no-unused-vars
+   97:7   error    'baseEnd' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                      no-unused-vars
+  186:9   error    'hasUserReviewed' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                              no-unused-vars
+  197:6   warning  React Hook useEffect has a missing dependency: 'pincode'. Either include it or remove the dependency array                                   react-hooks/exhaustive-deps
+  246:6   warning  React Hook useEffect has missing dependencies: 'fetchProductDetails' and 'fetchReviews'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+  474:57  error    'isOriginal' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                   no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/ProductList.jsx
+  67:6  warning  React Hook useEffect has a missing dependency: 'fetchProductdata'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  74:6  warning  React Hook useEffect has a missing dependency: 'categoryId'. Either include it or remove the dependency array        react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/ResetPassword.jsx
+  37:7  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  35 |
+  36 |     if (location?.state?.email) {
+> 37 |       setData((prev) => ({
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  38 |         ...prev,
+  39 |         email: location?.state?.email
+  40 |       }))  react-hooks/set-state-in-effect
+  42:6  warning  React Hook useEffect has missing dependencies: 'location?.state?.data?.success', 'location?.state?.email', and 'navigate'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/SearchP.jsx
+  56:5  warning  React Hook useEffect has a missing dependency: 'fetchData'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/Success.jsx
+  41:8  warning  React Hook useEffect has missing dependencies: 'fetchCartItem', 'fetchOrder', 'fetchUser', and 'setAppliedCoupon'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/VerifyEmail.jsx
+  51:8  warning  React Hook useEffect has a missing dependency: 'verifyEmail'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/pages/Wishlist.jsx
+  12:10  error  'motion' is defined but never used. Allowed unused vars must match /^[A-Z_]/u             no-unused-vars
+  17:9   error  'navigate' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  19:9   error  'user' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u      no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/provider/GlobalProvider.jsx
+   18:14  error    Fast refresh only works when a file only exports components. Move your React context(s) to a separate file                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-refresh/only-export-components
+   19:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-refresh/only-export-components
+  135:5   error    Unnecessary try/catch wrapper                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  no-useless-catch
+  163:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  161 |     // Total Quantity
+  162 |     const qty = validItems.reduce((prev, curr) => prev + (curr.quantity || 0), 0);
+> 163 |     setTotalQty(qty);
+      |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  164 |
+  165 |     // Subtotal (with product discount)
+  166 |     const subtotal = validItems.reduce((prev, curr) => {  react-hooks/set-state-in-effect
+  232:14  error    'error' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              no-unused-vars
+  232:21  error    Empty block statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-empty
+  264:6   warning  React Hook useEffect has missing dependencies: 'dispatch', 'fetchAddress', 'fetchCartItem', and 'fetchOrder'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/exhaustive-deps
+  277:6   warning  React Hook useEffect has a missing dependency: 'fetchCartItem'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               react-hooks/exhaustive-deps
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/store/userSlice.js
+  42:25  error  'action' is defined but never used  no-unused-vars
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/store/wishlistSlice.js
+  16:11  error  Empty block statement  no-empty
+
+/Users/siva reddy/e-commeric/pickle/frontend/src/utils/fetchUserDetails.js
+  10:14  error  'error' is defined but never used  no-unused-vars
+
+✖ 115 problems (87 errors, 28 warnings)
+

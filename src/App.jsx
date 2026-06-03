@@ -1,0 +1,119 @@
+import { Outlet, Navigate } from 'react-router-dom'
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { Toaster } from 'react-hot-toast';
+import { useEffect, useState, useCallback } from 'react';
+import fetchUserDetails from './utils/fetchUserDetails';
+import { setUserDetails } from './store/userSlice';
+import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/productSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import Axios from './utils/Axios';
+import SummaryApi from './common/SummaryApi';
+import GlobalProvider from './provider/GlobalProvider';
+import BottomNavigationBar from './components/BottomNavigationBar';
+import ScrollToTop from './components/ScrollToTop';
+import isDeliveryBoy from './utils/isDeliveryBoy';
+import isAdmin from './utils/isAdmin';
+import AxiosToastError from './utils/AxiosToastError';
+import Loading from './components/Loading';
+
+
+function App() {
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+  const [initialLoading, setInitialLoading] = useState(true)
+
+  const fetchUser = useCallback(async()=>{
+      if(localStorage.getItem('accessToken')){
+
+        const userData = await fetchUserDetails()
+        if(userData?.success){
+          dispatch(setUserDetails(userData.data))
+        }
+      }
+  }, [dispatch])
+
+  const fetchCategory = useCallback(async()=>{
+    try {
+        dispatch(setLoadingCategory(true))
+        const response = await Axios({
+            ...SummaryApi.getCategory
+        })
+        const { data : responseData } = response
+        if(responseData.success){
+           dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name)))) 
+        }
+    } catch (error) {
+        AxiosToastError(error)
+    }finally{
+
+      dispatch(setLoadingCategory(false))
+    }
+  }, [dispatch])
+
+  const fetchSubCategory = useCallback(async()=>{
+    try {
+        const response = await Axios({
+            ...SummaryApi.getSubCategory
+        })
+        const { data : responseData } = response
+        if(responseData.success){
+           dispatch(setAllSubCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name)))) 
+        }
+    } catch (error) {
+        AxiosToastError(error)
+    }
+  }, [dispatch])
+
+  useEffect(() => {
+    // Explicitly disable dark mode / clear theme settings to operate strictly in light mode
+    localStorage.removeItem('theme')
+    document.documentElement.classList.remove('dark')
+
+    const initializeApp = async () => {
+      try {
+        await Promise.all([
+          fetchUser(),
+          fetchCategory(),
+          fetchSubCategory()
+        ]);
+      } catch (err) {
+        console.error("Initialization failed:", err);
+      } finally {
+        setTimeout(() => {
+          setInitialLoading(false);
+        }, 600);
+      }
+    };
+    initializeApp();
+  }, [fetchUser, fetchCategory, fetchSubCategory]);
+
+  if (initialLoading) {
+    return <Loading fullPage={true} />;
+  }
+
+  // Redirect admins to their isolated portal (AFTER all hooks)
+  if (isAdmin(user?.role)) {
+    return <Navigate to="/admin-portal/dashboard" replace />
+  }
+
+  // Redirect delivery boys to their isolated portal (AFTER all hooks)
+  if (isDeliveryBoy(user?.role)) {
+    return <Navigate to="/delivery-portal/dashboard" replace />
+  }
+
+  return (
+    <GlobalProvider> 
+      <ScrollToTop/>
+      <Header/>
+      <main className='min-h-[78vh] pt-28 pb-24 lg:pt-20 lg:pb-0'>
+          <Outlet/>
+      </main>
+      <Footer/>
+      <Toaster/>
+      <BottomNavigationBar/>
+    </GlobalProvider>
+  )
+}
+
+export default App

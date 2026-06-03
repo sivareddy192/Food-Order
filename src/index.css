@@ -1,0 +1,138 @@
+@import "tailwindcss";
+@custom-variant dark {
+  &:where(.dark, .dark *)
+}
+
+@theme {
+  --color-luxury-gold: #c5a880;
+  --color-luxury-gold-dark: #a88d67;
+  --color-luxury-bg: #06070a;
+  --color-luxury-card: #12141c;
+  --color-luxury-border: #1e2230;
+  --color-luxury-green: #0a845c;
+  --color-luxury-green-dark: #0e3e26;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+body{
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    @apply bg-[#fafaf8] text-slate-800 dark:bg-[#06070a] transition-colors duration-300;
+}
+
+.font-luxury-serif {
+    font-family: "Playfair Display", serif;
+}
+
+.font-luxury-sans {
+    font-family: "Outfit", sans-serif;
+}
+
+.bg-luxury-gold-gradient {
+    background: linear-gradient(135deg, #d4af37 0%, #c5a880 50%, #aa8c4c 100%);
+}
+
+.bg-luxury-green-gradient {
+    background: linear-gradient(135deg, #0e3e26 0%, #0a845c 100%);
+}
+
+.shadow-premium {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.hover-luxury-glow {
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-luxury-glow:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -15px rgba(197, 168, 128, 0.25);
+    border-color: rgba(197, 168, 128, 0.6);
+}
+
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scrollbarCustom::-webkit-scrollbar{
+    width: 7px;
+    background-color: rgb(24, 24, 27);
+}
+.scrollbarCustom::-webkit-scrollbar-thumb{
+    background-color: rgb(63, 63, 70);
+    border-radius: 9999px;
+}
+
+/* Premium micro-interactions and transitions */
+.hover-gold-glow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-gold-glow:hover {
+    box-shadow: 0 0 15px rgba(197, 168, 128, 0.3);
+    border-color: #c5a880;
+}
+
+.hover-green-glow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hover-green-glow:hover {
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+/* Premium Glassmorphism Templates */
+@utility glass-panel {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+}
+
+@utility glass-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.06);
+    }
+}
+
+@utility glass-dark {
+    background: rgba(18, 20, 28, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+}
+
+@utility glass-gold {
+    background: rgba(253, 251, 247, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(197, 168, 128, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(197, 168, 128, 0.08);
+}
+
+@utility glass-green {
+    background: rgba(14, 62, 38, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(10, 132, 92, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(10, 132, 92, 0.05);
+}
+
+
