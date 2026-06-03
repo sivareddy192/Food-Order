@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -17,24 +16,13 @@ import { getImageUrl } from '../utils/getImageUrl'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from "react-hot-toast"
 import { useGlobalContext } from '../provider/GlobalProvider'
-import { valideURLConvert } from '../utils/valideURLConvert'
 
-const ProductDisplay = ({ productId: propProductId, onClose }) => {
+const ProductDisplay = () => {
   const params = useParams()
   const navigate = useNavigate()
   const { addItemToCart, cartItem } = useGlobalContext()
   const productUrl = params?.product
-  const productId = propProductId || (productUrl ? productUrl.split("-").pop() : null)
-
-  // Redirect direct URL hits to home page '/' and open as a modal
-  useEffect(() => {
-    if (!propProductId && productUrl) {
-      const extractedId = productUrl.split("-").pop()
-      if (extractedId) {
-        navigate("/", { replace: true, state: { openProduct: extractedId } })
-      }
-    }
-  }, [productUrl, propProductId, navigate])
+  const productId = productUrl ? productUrl.split("-").pop() : null
 
   const [data, setData] = useState({
     name: "",
@@ -252,12 +240,10 @@ const ProductDisplay = ({ productId: propProductId, onClose }) => {
   }
 
   useEffect(() => {
-    if (!propProductId) {
-      window.scrollTo(0, 0)
-    }
+    window.scrollTo(0, 0)
     fetchProductDetails()
     fetchReviews()
-  }, [params, propProductId, productId])
+  }, [params])
 
   // Reset selected image and scroll position when details finish loading or product ID changes
   useEffect(() => {
@@ -268,8 +254,7 @@ const ProductDisplay = ({ productId: propProductId, onClose }) => {
   }, [loading, productId])
 
   const handleShare = () => {
-    const shareUrl = `${window.location.origin}/product/${valideURLConvert(data.name)}-${productId}`
-    navigator.clipboard.writeText(shareUrl)
+    navigator.clipboard.writeText(window.location.href)
     toast.success("Product link copied to clipboard!")
   }
 
@@ -927,7 +912,7 @@ const ProductDisplay = ({ productId: propProductId, onClose }) => {
 
       {/* Sticky Bottom Bar for Mobile */}
       <AnimatePresence>
-        {showStickyBar && !propProductId && (
+        {showStickyBar && (
             <motion.div 
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}

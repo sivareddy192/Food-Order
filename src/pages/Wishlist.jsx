@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { removeFromWishlist, clearWishlist } from '../store/wishlistSlice'
 import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees'
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
@@ -12,18 +11,13 @@ import { FaHeart, FaTrash } from 'react-icons/fa'
 import { IoHeartDislike } from 'react-icons/io5'
 import { motion, AnimatePresence } from 'framer-motion'
 import toast from 'react-hot-toast'
-import { useGlobalContext } from '../provider/GlobalProvider'
 
 const Wishlist = () => {
   const dispatch = useDispatch()
-  const { setSelectedProductId } = useGlobalContext()
+  const navigate = useNavigate()
   const wishlistItems = useSelector(state => state.wishlist.items)
+  const user = useSelector(state => state.user)
   const [removing, setRemoving] = useState(null)
-
-  const handleProductClick = (e, itemId) => {
-    e.preventDefault()
-    setSelectedProductId(itemId)
-  }
 
   const handleRemove = (item) => {
     setRemoving(item._id)
@@ -118,7 +112,7 @@ const Wishlist = () => {
                     className="group glass-card rounded-3xl overflow-hidden flex flex-col"
                   >
                     {/* Image */}
-                    <Link to={url} onClick={(e) => handleProductClick(e, item._id)} className="relative aspect-square w-full bg-[#faf9f6] flex items-center justify-center p-4 overflow-hidden">
+                    <Link to={url} className="relative aspect-square w-full bg-[#faf9f6] flex items-center justify-center p-4 overflow-hidden">
                       <img
                         src={getImageUrl(item.image?.[0])}
                         alt={item.name}
@@ -144,7 +138,7 @@ const Wishlist = () => {
 
                     {/* Content */}
                     <div className="flex flex-col flex-1 p-4">
-                      <Link to={url} onClick={(e) => handleProductClick(e, item._id)}>
+                      <Link to={url}>
                         <h3 className="text-[12.5px] lg:text-[13.5px] font-bold text-slate-800 line-clamp-2 leading-snug mb-2 tracking-tight group-hover:text-luxury-green-dark transition-colors">
                           {item.name}
                         </h3>

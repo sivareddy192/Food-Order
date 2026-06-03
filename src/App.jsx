@@ -1,4 +1,4 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { Toaster } from 'react-hot-toast';
@@ -9,8 +9,7 @@ import { setAllCategory,setAllSubCategory,setLoadingCategory } from './store/pro
 import { useDispatch, useSelector } from 'react-redux';
 import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
-import GlobalProvider, { useGlobalContext } from './provider/GlobalProvider';
-import ProductModal from './components/ProductModal';
+import GlobalProvider from './provider/GlobalProvider';
 import BottomNavigationBar from './components/BottomNavigationBar';
 import ScrollToTop from './components/ScrollToTop';
 import isDeliveryBoy from './utils/isDeliveryBoy';
@@ -105,25 +104,6 @@ function App() {
 
   return (
     <GlobalProvider> 
-      <AppContent />
-    </GlobalProvider>
-  )
-}
-
-function AppContent() {
-  const { selectedProductId, setSelectedProductId } = useGlobalContext()
-  const location = useLocation()
-
-  useEffect(() => {
-    if (location.state?.openProduct) {
-      setSelectedProductId(location.state.openProduct)
-      // Clear navigation state so a reload doesn't keep opening the modal
-      window.history.replaceState({}, document.title)
-    }
-  }, [location, setSelectedProductId])
-
-  return (
-    <>
       <ScrollToTop/>
       <Header/>
       <main className='min-h-[78vh] pt-28 pb-24 lg:pt-20 lg:pb-0'>
@@ -132,14 +112,7 @@ function AppContent() {
       <Footer/>
       <Toaster/>
       <BottomNavigationBar/>
-
-      {selectedProductId && (
-        <ProductModal 
-          productId={selectedProductId} 
-          onClose={() => setSelectedProductId(null)} 
-        />
-      )}
-    </>
+    </GlobalProvider>
   )
 }
 
