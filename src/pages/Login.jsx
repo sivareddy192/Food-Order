@@ -87,7 +87,7 @@ const Login = () => {
                 } else if (userDetails.data.role === "DELIVERY_BOY") {
                     navigate("/dashboard/delivery-boy")
                 } else {
-                    navigate("/home")
+                    navigate("/")
                 }
             }
 

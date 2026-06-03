@@ -442,25 +442,25 @@ const ProductDisplay = () => {
                                     </div>
                                 ) : (
                                     <div 
-                                        className="relative w-full h-full overflow-hidden flex items-center justify-center cursor-zoom-in"
-                                        onMouseMove={handleMouseMove}
-                                        onMouseEnter={() => setIsZoomed(true)}
-                                        onMouseLeave={() => {
+                                        className={`relative w-full h-full overflow-hidden flex items-center justify-center ${!isMobile ? 'cursor-zoom-in' : ''}`}
+                                        onMouseMove={!isMobile ? handleMouseMove : undefined}
+                                        onMouseEnter={!isMobile ? () => setIsZoomed(true) : undefined}
+                                        onMouseLeave={!isMobile ? () => {
                                             setIsZoomed(false);
                                             setZoomPos({ x: 50, y: 50 });
-                                        }}
+                                        } : undefined}
                                         onClick={() => setIsFullScreen(true)}
                                     >
                                         <img
                                             src={getImageUrl(item, 800)}
-                                            style={isZoomed ? {
+                                            style={(!isMobile && isZoomed) ? {
                                                 transform: 'scale(2.2)',
                                                 transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`
                                             } : {
                                                 transform: 'scale(1)',
                                                 transformOrigin: 'center'
                                             }}
-                                            className={`w-full h-full object-contain transition-all duration-150 ease-out pointer-events-none ${isZoomed ? 'p-0' : 'p-4 lg:p-6'}`}
+                                            className={`w-full h-full object-contain transition-all duration-150 ease-out pointer-events-none ${(!isMobile && isZoomed) ? 'p-0' : 'p-4 lg:p-6'}`}
                                             alt={`${data?.name}-${index}`}
                                         /> 
                                     </div>

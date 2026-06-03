@@ -230,7 +230,7 @@ const Home = () => {
                 >
                    {offer.image && (
                       <img 
-                        src={offer.image} 
+                        src={getImageUrl(offer.image)} 
                         alt={offer.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                       />

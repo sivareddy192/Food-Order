@@ -9,6 +9,7 @@ import ProductLoading from '../components/ProductLoading'
 import { useSelector } from 'react-redux'
 import { valideURLConvert } from '../utils/valideURLConvert'
 import monkey from "../assets/monkey-2.jpg"
+import { getImageUrl } from '../utils/getImageUrl'
 
 const ProductList = () => {
   const [data, setData] = useState([])
@@ -105,7 +106,7 @@ const ProductList = () => {
 
                             <div className={`w-10 h-10 lg:w-14 lg:h-14 flex items-center justify-center rounded-xl lg:rounded-2xl transition-all duration-300 ${isActive ? 'bg-white shadow-premium border border-[#c5a880]/15' : ''}`}>
                                 <img
-                                    src={s.image}
+                                    src={getImageUrl(s.image)}
                                     alt={s.name}
                                     className="w-8 h-8 lg:w-11 lg:h-11 object-contain"
                                 />

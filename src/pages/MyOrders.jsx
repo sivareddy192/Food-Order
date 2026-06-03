@@ -306,7 +306,7 @@ const MyOrders = () => {
                     >
                       <div className="flex items-center gap-4">
                         <img
-                          src={item.image}
+                          src={getImageUrl(item.image)}
                           className="w-14 h-14 rounded-xl object-contain bg-gray-100 p-2"
                         />
 

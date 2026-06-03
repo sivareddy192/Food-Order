@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Axios from '../utils/Axios';
 import SummaryApi from '../common/SummaryApi';
 import { FaStar, FaShoppingCart, FaLeaf, FaMedal, FaFire, FaShieldAlt } from 'react-icons/fa';
+import { getImageUrl } from '../utils/getImageUrl';
 
 const LandingPage = () => {
   const [landingPageData, setLandingPageData] = useState(null);
@@ -11,10 +12,10 @@ const LandingPage = () => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
 
-  // If user is logged in, redirect them to /home automatically
+  // If user is logged in, redirect them to / automatically
   useEffect(() => {
     if (user && user._id) {
-      navigate('/home');
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -66,13 +67,13 @@ const LandingPage = () => {
           
           <div className="flex items-center gap-4 pt-4">
             <button 
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/')}
               className="bg-[#D47A15] hover:bg-[#b06511] text-white px-6 cursor-pointer py-3 rounded text-sm font-bold tracking-wider uppercase transition-colors flex items-center gap-2"
             >
               <FaShoppingCart /> Explore Shop
             </button>
             <button 
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/')}
               className="border border-white/30 cursor-pointer text-white px-6 py-3 rounded text-sm font-bold tracking-wider uppercase hover:bg-white/10 transition-colors flex items-center gap-2"
             >
               <FaLeaf /> Our Story
@@ -87,7 +88,7 @@ const LandingPage = () => {
            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 md:p-12 flex flex-col items-center justify-center text-center shadow-2xl shadow-black/50 relative overflow-hidden group">
               <div className="absolute inset-0 bg-linear-to-br from-[#D47A15]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
-              <img src={landingPageData.hero.cardImage || "/mango.png"} alt="Aura Avakaya" className="w-32 h-32 object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6" onError={(e) => { e.target.style.display='none' }} />
+              <img src={getImageUrl(landingPageData.hero.cardImage) || "/mango.png"} alt="Aura Avakaya" className="w-32 h-32 object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-500 mb-6" onError={(e) => { e.target.style.display='none' }} />
               
               <h3 className="font-luxury-serif text-2xl text-white font-bold mb-1">{landingPageData.hero.cardTitle}</h3>
               <p className="text-[#D47A15] text-[10px] font-bold uppercase tracking-[0.2em] mb-4">{landingPageData.hero.cardSubtitle}</p>
@@ -122,7 +123,7 @@ const LandingPage = () => {
          <div className="w-full md:w-1/2">
             <div 
               className="relative aspect-4/3 rounded-2xl overflow-hidden bg-linear-to-t from-[#4f5c53] to-transparent flex items-end p-8 shadow-xl bg-cover bg-center"
-              style={landingPageData.about?.image ? { backgroundImage: `url(${landingPageData.about.image})` } : {}}
+              style={landingPageData.about?.image ? { backgroundImage: `url(${getImageUrl(landingPageData.about.image)})` } : {}}
             >
                {/* Dark overlay to ensure text readability if there's an image */}
                {landingPageData.about?.image && <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />}
@@ -141,7 +142,7 @@ const LandingPage = () => {
               ))}
             </div>
             <button 
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/')}
               className="mt-8 bg-[#0A2A1A] cursor-pointer hover:bg-[#15422d] text-white px-6 py-3 rounded text-sm font-bold tracking-wider transition-colors"
             >
               Browse Our Jars

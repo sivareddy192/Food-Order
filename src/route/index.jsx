@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createMemoryRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home";
 import LandingPage from "../pages/LandingPage";
@@ -56,7 +56,7 @@ import FestivalOfferAdmin from "../pages/FestivalOfferAdmin";
 import AdminLandingPage from "../pages/AdminLandingPage";
 import AdminMessages from "../pages/AdminMessages";
 
-const router = createBrowserRouter([
+const router = createMemoryRouter([
     // ─── Delivery Boy Portal ───────────────────────────────────────────────
     {
         path: "delivery-portal",
@@ -99,8 +99,9 @@ const router = createBrowserRouter([
         path: "/",
         element: <App />,
         children: [
-            { path: "",                element: <LandingPage /> },
-            { path: "home",            element: <Home /> },
+            { path: "",                element: <Home /> },
+            { path: "home",            element: <Navigate to="/" replace /> },
+            { path: "landing",         element: <LandingPage /> },
             { path: "search",          element: <SearchP /> },
             { path: "login",           element: <Login /> },
             { path: "register",        element: <Register /> },

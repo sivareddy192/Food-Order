@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import Axios from '../utils/Axios'
 import SummaryApi from '../common/SummaryApi'
 import AxiosToastError from '../utils/AxiosToastError'
+import { getImageUrl } from '../utils/getImageUrl'
 
 const DisplayCartItem = ({ close }) => {
 
@@ -455,7 +456,7 @@ const DisplayCartItem = ({ close }) => {
                                             <div className='relative shrink-0'>
                                                 <div className='w-20 h-20 rounded-2xl bg-gray-50 dark:bg-neutral-950 border border-gray-100 overflow-hidden flex items-center justify-center p-2 group-hover:border-green-200 transition-all'>
                                                     <img
-                                                        src={item.productId?.image?.[0]}
+                                                        src={getImageUrl(item.productId?.image?.[0], 150)}
                                                         className="w-full h-full object-contain"
                                                     />
                                                 </div>
