@@ -23,6 +23,7 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
   const cartItem = useSelector((state) => state.cartItem.cart);
   const user = useSelector((state) => state?.user);
@@ -273,6 +274,8 @@ const GlobalProvider = ({ children }) => {
         fetchOrder,
         fetchUser,
         fetchAddress,
+        selectedProductId,
+        setSelectedProductId,
       }}
     >
       {children}

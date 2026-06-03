@@ -14,11 +14,16 @@ import toast from 'react-hot-toast'
 const ProductBox = ({ data, hideNewTag }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { addItemToCart, cartItem } = useGlobalContext()
+  const { addItemToCart, cartItem, setSelectedProductId } = useGlobalContext()
   const wishlistItems = useSelector(state => state.wishlist.items)
   const isFavorite = wishlistItems.some(i => i._id === data._id)
 
   const url = `/product/${valideURLConvert(data.name)}-${data._id}`
+
+  const handleProductClick = (e) => {
+    e.preventDefault()
+    setSelectedProductId(data._id)
+  }
 
   // ─── Build deduplicated variant list ──────────────────────────────────────
   // Combine base + variants, deduplicate by unit (Map keeps first occurrence)
@@ -137,7 +142,7 @@ const ProductBox = ({ data, hideNewTag }) => {
         )}
 
         {/* ── Image Zone ───────────────────────────────────────────────── */}
-        <Link to={url} className="relative aspect-square w-full bg-[#faf9f6] items-center justify-center p-3 overflow-hidden block">
+        <Link to={url} onClick={handleProductClick} className="relative aspect-square w-full bg-[#faf9f6] items-center justify-center p-3 overflow-hidden block">
           <img
             src={getImageUrl(data.image[0])}
             alt={data.name}
@@ -194,7 +199,7 @@ const ProductBox = ({ data, hideNewTag }) => {
         <div className="flex flex-col flex-1 p-4">
 
           {/* Product Name */}
-          <Link to={url}>
+          <Link to={url} onClick={handleProductClick}>
             <h3 className="text-[13px] lg:text-[14.5px] font-bold text-slate-800 line-clamp-2 leading-snug mb-3 tracking-tight font-luxury-sans group-hover:text-luxury-green-dark transition-colors">
               {data.name}
             </h3>
