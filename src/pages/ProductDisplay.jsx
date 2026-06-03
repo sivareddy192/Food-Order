@@ -204,7 +204,7 @@ const ProductDisplay = () => {
         data: { productId }
       })
 
-      if (response.data.success) {
+      if (response.data.success && response.data.data) {
         const productData = response.data.data
         setData({
           ...productData,
@@ -216,9 +216,12 @@ const ProductDisplay = () => {
             stock: productData.stock
           }
         })
+      } else {
+        setData({})
       }
     } catch (error) {
       AxiosToastError(error)
+      setData({})
     } finally {
       setLoading(false)
     }
@@ -310,6 +313,83 @@ const ProductDisplay = () => {
     .map(v => ({ ...v, isOriginal: false }));
 
   const allVariants = baseVariant ? [baseVariant, ...otherVariants] : [];
+
+  if (loading) {
+    return (
+      <section className='w-full mx-auto pb-32 lg:pb-10 bg-white text-gray-900 min-h-screen'>
+        <div className='flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-16 max-w-7xl mx-auto px-4 lg:px-6 mt-4 lg:mt-10 animate-pulse'>
+          
+          {/* Left Column: Image Gallery Skeleton */}
+          <div className='w-full flex flex-col gap-4 mt-4 lg:mt-10'>
+            <div className='aspect-square w-full bg-gray-100 rounded-3xl' />
+            <div className='flex gap-3 overflow-x-auto pb-2'>
+              {[1, 2, 3, 4].map(n => (
+                <div key={n} className='w-16 h-16 lg:w-24 lg:h-24 bg-gray-50 rounded-2xl shrink-0' />
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column: Info Skeleton */}
+          <div className='flex flex-col gap-4 mt-4 lg:mt-10 font-luxury-sans'>
+            {/* Delivery badge */}
+            <div className='h-7 w-48 bg-gray-50 rounded-full' />
+            {/* Title */}
+            <div className='h-9 w-3/4 bg-gray-100 rounded-xl mt-2' />
+            <div className='h-9 w-1/2 bg-gray-100 rounded-xl' />
+            {/* Share button */}
+            <div className='h-8 w-24 bg-gray-50 rounded-full mt-2' />
+            {/* Ratings */}
+            <div className='h-6 w-56 bg-gray-50 rounded-lg mt-2' />
+            {/* Price */}
+            <div className='flex items-center gap-3 mt-4'>
+              <div className='h-12 w-36 bg-gray-100 rounded-xl' />
+              <div className='h-7 w-20 bg-gray-50 rounded-lg' />
+              <div className='h-7 w-24 bg-gray-50 rounded-full' />
+            </div>
+            {/* Stock badge */}
+            <div className='h-7 w-32 bg-gray-50 rounded-full mt-2' />
+            {/* Action buttons */}
+            <div className='flex gap-4 mt-4 w-full max-w-lg'>
+              <div className='h-11 flex-1 bg-gray-100 rounded-xl' />
+              <div className='h-11 flex-1 bg-gray-100 rounded-xl' />
+            </div>
+            {/* Trust Card */}
+            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6'>
+              <div className='h-20 bg-gray-50 rounded-2xl border border-gray-100' />
+              <div className='h-20 bg-gray-50 rounded-2xl border border-gray-100' />
+            </div>
+            {/* Accordions */}
+            <div className='space-y-4 mt-6'>
+              {[1, 2, 3].map(n => (
+                <div key={n} className='h-14 w-full bg-gray-50 rounded-2xl border border-gray-100' />
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+    )
+  }
+
+  if (!data || !data.name) {
+    return (
+      <section className='w-full mx-auto py-20 bg-white text-gray-900 min-h-[60vh] flex flex-col items-center justify-center font-luxury-sans'>
+        <div className='w-16 h-16 text-amber-600 mb-4'>
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-16 h-16">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <h2 className='text-2xl font-bold text-luxury-green-dark mb-2'>Product Not Found</h2>
+        <p className='text-gray-500 mb-6 text-sm text-center px-4'>The product you are looking for does not exist, is unpublished, or failed to load.</p>
+        <button 
+          onClick={() => navigate('/')} 
+          className='bg-luxury-green-dark hover:bg-luxury-green text-white font-bold px-8 py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 shadow-md'
+        >
+          Go Back Home
+        </button>
+      </section>
+    )
+  }
 
   return (
     <>

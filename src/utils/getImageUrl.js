@@ -18,6 +18,11 @@ export const getImageUrl = (image) => {
         url = url.replace("http://", "https://");
     }
 
+    // Optimize Cloudinary assets dynamically with auto format and quality auto compression
+    if (url.includes("res.cloudinary.com") && url.includes("/image/upload/")) {
+        url = url.replace("/image/upload/", "/image/upload/q_auto,f_auto/");
+    }
+
     // If it's a relative path, prepend the API base URL
     if (!url.startsWith("http") && !url.startsWith("data:")) {
         const base = import.meta.env.VITE_BASE_URL || import.meta.env.VITE_API_URL || "";

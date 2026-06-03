@@ -1,5 +1,5 @@
-export const baseURL = import.meta.env.VITE_BASE_URL || "https://food-backend-orcin.vercel.app";
-// export const baseURL = "http://localhost:8080"
+// export const baseURL = import.meta.env.VITE_BASE_URL || "https://food-backend-orcin.vercel.app";
+export const baseURL = "http://localhost:8080"
 const SummaryApi = {
     register : {
         url : 'api/user/register',
