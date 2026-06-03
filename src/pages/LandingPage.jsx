@@ -12,10 +12,10 @@ const LandingPage = () => {
   const user = useSelector(state => state.user);
   const navigate = useNavigate();
 
-  // If user is logged in, redirect them to / automatically
+  // If user is logged in, redirect them to /home automatically
   useEffect(() => {
     if (user && user._id) {
-      navigate('/');
+      navigate('/home');
     }
   }, [user, navigate]);
 
@@ -67,13 +67,13 @@ const LandingPage = () => {
           
           <div className="flex items-center gap-4 pt-4">
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/home')}
               className="bg-[#D47A15] hover:bg-[#b06511] text-white px-6 cursor-pointer py-3 rounded text-sm font-bold tracking-wider uppercase transition-colors flex items-center gap-2"
             >
               <FaShoppingCart /> Explore Shop
             </button>
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/home')}
               className="border border-white/30 cursor-pointer text-white px-6 py-3 rounded text-sm font-bold tracking-wider uppercase hover:bg-white/10 transition-colors flex items-center gap-2"
             >
               <FaLeaf /> Our Story
@@ -142,7 +142,7 @@ const LandingPage = () => {
               ))}
             </div>
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/home')}
               className="mt-8 bg-[#0A2A1A] cursor-pointer hover:bg-[#15422d] text-white px-6 py-3 rounded text-sm font-bold tracking-wider transition-colors"
             >
               Browse Our Jars

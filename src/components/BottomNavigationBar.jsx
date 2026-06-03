@@ -25,7 +25,7 @@ const BottomNavigationBar = () => {
             <div className="flex items-center justify-around h-20 px-2">
                 
                 {/* Home Tab */}
-                <Link to="/" className="flex-1 flex flex-col items-center justify-center gap-1.5 group transition-colors h-full">
+                <Link to="/home" className="flex-1 flex flex-col items-center justify-center gap-1.5 group transition-colors h-full">
                     <div className="relative p-2.5 rounded-2xl flex items-center justify-center active:scale-90 z-10">
                         {isActive('/') && (
                             <motion.div

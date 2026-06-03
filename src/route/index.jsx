@@ -99,9 +99,8 @@ const router = createMemoryRouter([
         path: "/",
         element: <App />,
         children: [
-            { path: "",                element: <Home /> },
-            { path: "home",            element: <Navigate to="/" replace /> },
-            { path: "landing",         element: <LandingPage /> },
+            { path: "",                element: <LandingPage /> },
+            { path: "home",            element: <Home /> },
             { path: "search",          element: <SearchP /> },
             { path: "login",           element: <Login /> },
             { path: "register",        element: <Register /> },
