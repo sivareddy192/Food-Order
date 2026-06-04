@@ -46,23 +46,21 @@ const Search = () => {
                         <TypeAnimation
                                 sequence={[
                                     
-                                    'Search "milk"',
+                                    'Search "chicken pickle"',
                                     1500, 
-                                    'Search "bread"',
+                                    'Search "mango pickle"',
                                     1500,
-                                    'Search "sugar"',
+                                    'Search "garlic pickle"',
                                     1500,
-                                    'Search "panner"',
+                                    'Search "tomato pickle"',
                                     1500,
-                                    'Search "chocolate"',
+                                    'Search "prawn pickle"',
                                     1500,
-                                    'Search "curd"',
+                                    'Search "mutton pickle"',
                                     1500,
-                                    'Search "rice"',
+                                    'Search "lime pickle"',
                                     1500,
-                                    'Search "egg"',
-                                    1500,
-                                    'Search "chips"',
+                                    'Search "chilli pickle"',
                                 ]}
                                 wrapper="span"
                                 speed={40}
@@ -75,7 +73,7 @@ const Search = () => {
                         <input
                             type='text'
                             id='search'
-                            placeholder='Search for atta dal and more.'
+                            placeholder='Search for chicken pickle, mango pickle and more...'
                             autoFocus
                             defaultValue={searchText}
                             className='bg-transparent w-full h-full outline-none'
