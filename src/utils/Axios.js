@@ -15,6 +15,12 @@ Axios.interceptors.request.use(
             config.headers.Authorization = `Bearer ${accessToken}`
         }
 
+        // Automatically map 'data' to 'params' for GET requests to support transparent query-string migration
+        if (config.method?.toLowerCase() === 'get' && config.data) {
+            config.params = { ...config.params, ...config.data };
+            delete config.data;
+        }
+
         return config
     },
     (error)=>{
