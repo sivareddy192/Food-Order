@@ -14,7 +14,7 @@ import { getImageUrl } from '../utils/getImageUrl'
 const ProductList = () => {
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [totalPage, setTotalPage] = useState(1)
 
   const containerRef = useRef(null)

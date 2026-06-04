@@ -12,7 +12,7 @@ import ProductBox from './ProductBox'
 const CategoryWiseProductDisplay = ({ id, name, manualData, hideNewTag }) => {
     
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(id ? true : false)
     const containerRef = useRef()
     const subCategoryData = useSelector(state => state.product.allSubCategory)
 
@@ -41,8 +41,10 @@ const CategoryWiseProductDisplay = ({ id, name, manualData, hideNewTag }) => {
     useEffect(() => {
         if (manualData && manualData.length > 0) {
             setData(manualData)
+            setLoading(false)
         } else if (id) {
             setData([])
+            setLoading(true)
             fetchCategoryWiseProduct()
         }
     }, [id, manualData])

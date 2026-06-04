@@ -65,15 +65,10 @@ const AddToCartButton = ({ data, variant = 'green-pill' }) => {
         e.stopPropagation()
 
         try {
-            setLoading(true)
-            const response = await updateCartItem(cartItemDetails?._id, qty + 1)
-            if (response && response.success) {
-                toast.success('Quantity updated')
-            }
+            // Non-blocking update (no setLoading) for instant clicking experience
+            await updateCartItem(cartItemDetails?._id, qty + 1)
         } catch (error) {
             AxiosToastError(error)
-        } finally {
-            setLoading(false)
         }
     }
 
@@ -82,14 +77,13 @@ const AddToCartButton = ({ data, variant = 'green-pill' }) => {
         e.stopPropagation()
 
         try {
-            setLoading(true)
             if (qty === 1) {
+                // Deleting remains blocking as it removes the UI element
+                setLoading(true)
                 await deleteCartItem(cartItemDetails?._id)
             } else {
-                const response = await updateCartItem(cartItemDetails?._id, qty - 1)
-                if (response && response.success) {
-                    toast.success('Quantity updated')
-                }
+                // Non-blocking update (no setLoading) for instant clicking experience
+                await updateCartItem(cartItemDetails?._id, qty - 1)
             }
         } catch (error) {
             AxiosToastError(error)

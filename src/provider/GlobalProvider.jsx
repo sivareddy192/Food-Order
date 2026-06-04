@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +23,7 @@ const GlobalProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const updateTimers = useRef({});
 
   const cartItem = useSelector((state) => state.cartItem.cart);
   const user = useSelector((state) => state?.user);
@@ -95,34 +96,49 @@ const GlobalProvider = ({ children }) => {
       }
   };
 
-  // ✅ UPDATE CART QTY
-  const updateCartItem = async (id, qty) => {
-    // 🚀 OPTIMISTIC UI UPDATE: Push instantly so UI reacts in 1ms
+  // ✅ UPDATE CART QTY (with Debounced Network Requests & Optimistic UI)
+  const updateCartItem = (id, qty) => {
+    // 🚀 1. OPTIMISTIC UI UPDATE: Push instantly so UI reacts in 1ms
     dispatch(updateCartItemQtyOptimistic({ _id: id, qty: qty }));
 
-    try {
-      const response = await Axios({
-        ...SummaryApi.updateCartItemQty,
-        data: {
-          _id: id,
-          qty: qty,
-        },
-      });
+    // ⚡ 2. DEBOUNCE THE BACKEND NETWORK CALL (to prevent database thrashing & race conditions)
+    return new Promise((resolve, reject) => {
+        // Clear any pending update request for this item
+        if (updateTimers.current[id]) {
+            clearTimeout(updateTimers.current[id].timeout);
+        }
 
-      const { data: responseData } = response;
+        // Set a new timeout to execute the network request after 350ms
+        const timeout = setTimeout(async () => {
+            try {
+                const response = await Axios({
+                    ...SummaryApi.updateCartItemQty,
+                    data: {
+                        _id: id,
+                        qty: qty,
+                    },
+                });
 
-      if (responseData.success) {
-        // No need to do an extra network hit fetchCartItem() anymore!
-        return responseData;
-      } else {
-          // If backend explicitly rejects (e.g., stock issue), revert to truth
-          fetchCartItem();
-      }
-    } catch (error) {
-      // On network failure, revert UI
-      fetchCartItem();
-      throw error;
-    }
+                const { data: responseData } = response;
+
+                if (responseData.success) {
+                    resolve(responseData);
+                } else {
+                    // Revert to database state if backend explicitly rejects
+                    fetchCartItem();
+                    reject(new Error("Update failed"));
+                }
+            } catch (error) {
+                // Revert on network failure
+                fetchCartItem();
+                reject(error);
+            } finally {
+                delete updateTimers.current[id];
+            }
+        }, 350);
+
+        updateTimers.current[id] = { timeout, resolve, reject };
+    });
   };
 
   // ✅ DELETE CART ITEM
