@@ -272,7 +272,9 @@ const ProductDisplay = () => {
   }, [loading, productId])
 
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href)
+    const origin = window.location.origin
+    const fullUrl = productUrl ? `${origin}/product/${productUrl}` : window.location.href
+    navigator.clipboard.writeText(fullUrl)
     toast.success("Product link copied to clipboard!")
   }
 

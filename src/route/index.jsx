@@ -1,4 +1,4 @@
-import { createMemoryRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import Home from "../pages/Home";
 import LandingPage from "../pages/LandingPage";
@@ -56,7 +56,7 @@ import FestivalOfferAdmin from "../pages/FestivalOfferAdmin";
 import AdminLandingPage from "../pages/AdminLandingPage";
 import AdminMessages from "../pages/AdminMessages";
 
-const router = createMemoryRouter([
+const router = createBrowserRouter([
     // ─── Delivery Boy Portal ───────────────────────────────────────────────
     {
         path: "delivery-portal",
