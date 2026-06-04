@@ -42,6 +42,7 @@ const CategoryWiseProductDisplay = ({ id, name, manualData, hideNewTag }) => {
         if (manualData && manualData.length > 0) {
             setData(manualData)
         } else if (id) {
+            setData([])
             fetchCategoryWiseProduct()
         }
     }, [id, manualData])

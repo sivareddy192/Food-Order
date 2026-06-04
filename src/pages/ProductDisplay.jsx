@@ -254,6 +254,11 @@ const ProductDisplay = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    setData({
+      name: "",
+      image: [],
+      video: ""
+    })
     fetchProductDetails()
     fetchReviews()
   }, [params])

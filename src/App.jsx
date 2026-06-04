@@ -72,17 +72,20 @@ function App() {
 
     const initializeApp = async () => {
       try {
-        await Promise.all([
-          fetchUser(),
-          fetchCategory(),
-          fetchSubCategory()
-        ]);
+        // Run catalog fetches in the background (non-blocking for initial shell render)
+        fetchCategory();
+        fetchSubCategory();
+
+        // Only block initial page render on user profile fetch if they are logged in (to prevent role-flashing)
+        if (localStorage.getItem('accessToken')) {
+          await fetchUser();
+        } else {
+          fetchUser();
+        }
       } catch (err) {
         console.error("Initialization failed:", err);
       } finally {
-        setTimeout(() => {
-          setInitialLoading(false);
-        }, 600);
+        setInitialLoading(false);
       }
     };
     initializeApp();

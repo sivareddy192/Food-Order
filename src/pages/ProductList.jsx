@@ -60,6 +60,7 @@ const ProductList = () => {
   }
 
   useEffect(() => {
+    setData([])
     setPage(1)
   }, [params])
 

@@ -51,6 +51,11 @@ const SearchPage = () => {
     }
   }
 
+  useEffect(() => {
+    setData([])
+    setPage(1)
+  }, [searchText])
+
   useEffect(()=>{
     fetchData()
   },[page,searchText])
